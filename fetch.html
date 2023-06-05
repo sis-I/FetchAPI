@@ -10,17 +10,39 @@
 
 <body>
     <button id="gettext">Get Text</button>
-
+    <button id="getusers">Get Users</button>
+    <div id="output"></div>
+    <div id="users"></div>
     <script>
         document.getElementById('gettext').addEventListener('click', getText);
+
+        document.getElementById('getusers').addEventListener('click', getUsers);
 
         function getText() {
             fetch('simple.txt')
             .then((res) => {
+                // console.log(res.text());
                 return res.text();
             })
-            .then(function(data) {
-                console.log(data);
+            .then((data) => {
+                document.getElementById('output').innerHTML = data;
+            })
+            .catch((err) => console.log(err));
+        }
+
+        function getUsers() {
+            fetch('users.json')
+            .then((res) => res.json())
+            .then((data) => {
+                html = ''
+                for (let i in data) {
+                    html += `<ul style="list-style: none;">
+                        <li><strong>ID: </strong>${data[i].id}</li>
+                        <li><strong>Username: </strong>${data[i].username}</li>
+                        <li><strong>Email: </strong>${data[i].email}</li>
+                        </ul>`;
+                }
+                document.getElementById('users').innerHTML = html;
             })
         }
     </script>
